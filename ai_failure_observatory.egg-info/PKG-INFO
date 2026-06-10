@@ -1,0 +1,37 @@
+Metadata-Version: 2.4
+Name: ai-failure-observatory
+Version: 0.1.0
+Summary: AI agent reliability observability platform
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic>=2.5.0
+Requires-Dist: pydantic-settings>=2.1.0
+Requires-Dist: duckdb>=0.10.0
+Requires-Dist: pyarrow>=14.0.0
+Requires-Dist: pandas>=2.1.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: sqlglot>=23.0.0
+Requires-Dist: dbt-core>=1.7.0
+Requires-Dist: dbt-duckdb>=1.7.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+
+# AI Failure Observatory
+
+Deterministic AI agent reliability platform: ingest → validate → evaluate → classify → transform (dbt) → investigate (LLM optional).
+
+## Quick Start
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+pip install -e .
+cp .env.example .env
+python scripts/initialize_warehouse.py
+python scripts/generate_synthetic_data.py --count 10000
+python scripts/run_local_pipeline.py
+pytest tests/unit tests/integration -v
+```
+
+See `PROJECT_SPEC.md` for full architecture.

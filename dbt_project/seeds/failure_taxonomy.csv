@@ -1,0 +1,12 @@
+category,description,primary_signal
+hallucination,Unsupported claims in answer,low_correctness_with_retrieval
+retrieval_failure,Relevant context not retrieved,low_retrieval_score
+tool_failure,Tool call failed or wrong tool,low_tool_score
+sql_failure,SQL parse or semantic error,low_sql_score
+prompt_regression,Score drop after prompt change,prompt_v5_low_score
+reasoning_failure,Good components but wrong answer,reasoning_mismatch
+format_failure,Output format invalid,low_format_score
+latency_failure,Latency above threshold,latency_score_zero
+cost_failure,Cost above threshold,cost_score_zero
+pipeline_failure,Ingestion or data quality issue,duplicate_or_missing
+unknown,Ambiguous signal pattern,no_clear_match

@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: mart_agent_reliability
+    description: Per-agent daily reliability metrics
+    columns:
+      - name: agent_name
+        description: Agent identifier
+        tests: [not_null]
+      - name: run_date
+        description: Date of runs
+        tests: [not_null]
+      - name: reliability_score
+        description: Average overall reliability score
+      - name: failure_rate
+        description: Fraction of runs below reliability threshold
+
+  - name: mart_failure_trends
+    description: Failure counts by category, severity, and day
+    columns:
+      - name: failure_category
+        tests: [not_null]
+      - name: failure_count
+        tests: [not_null]
+
+  - name: mart_prompt_regression
+    description: Prompt version comparison with regression detection
+    columns:
+      - name: prompt_version_id
+        tests: [not_null]
+      - name: reliability_score
+        description: Average reliability for this prompt version
+
+  - name: mart_model_comparison
+    description: Model scoring matrix across task types
+    columns:
+      - name: model_name
+        tests: [not_null]
+      - name: reliability_score
+        description: Average reliability score
+
+  - name: mart_cost_latency
+    description: Cost and latency trends with spike detection
+    columns:
+      - name: run_date
+        tests: [not_null]
+      - name: avg_latency_ms
+        tests: [not_null]
+
+  - name: mart_incident_summary
+    description: Grouped incident records with recommendations
+    columns:
+      - name: failure_category
+        tests: [not_null]
+      - name: severity
+        tests:
+          - accepted_values:
+              values: ['critical', 'high', 'medium', 'low']

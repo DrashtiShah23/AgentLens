@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: stg_agent_runs
+    description: Staged agent runs with deduplication and type casting
+    columns:
+      - name: run_id
+        description: Unique run identifier
+        tests: [unique, not_null]
+      - name: agent_name
+        tests: [not_null]
+      - name: task_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['text_to_sql', 'retrieval_qa', 'tool_use', 'summarization', 'classification']
+      - name: prompt_version_id
+        tests: [not_null]
+      - name: model_name
+        tests: [not_null]
+      - name: latency_ms
+        tests: [not_null]
+
+  - name: stg_tool_calls
+    description: Staged tool call events
+    columns:
+      - name: tool_call_id
+        tests: [unique, not_null]
+      - name: run_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_agent_runs')
+              field: run_id
+      - name: tool_status
+        tests:
+          - accepted_values:
+              values: ['success', 'failed', 'skipped']
+
+  - name: stg_retrieval_events
+    description: Staged retrieval events with score validation
+    columns:
+      - name: retrieval_id
+        tests: [unique, not_null]
+      - name: run_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_agent_runs')
+              field: run_id
+      - name: relevance_score
+        tests: [not_null]
+
+  - name: stg_prompt_versions
+    description: Staged prompt version records
+    columns:
+      - name: prompt_version_id
+        tests: [not_null]
+      - name: agent_name
+        tests: [not_null]
+
+  - name: stg_evaluation_results
+    description: Staged evaluation results
+    columns:
+      - name: evaluation_id
+        tests: [unique, not_null]
+      - name: run_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_agent_runs')
+              field: run_id
+      - name: overall_score
+        tests: [not_null]

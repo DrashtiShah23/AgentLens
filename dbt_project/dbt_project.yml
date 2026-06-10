@@ -1,0 +1,21 @@
+name: ai_failure_observatory
+version: 1.0.0
+config-version: 2
+profile: observatory
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+
+models:
+  ai_failure_observatory:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: table
+
+vars:
+  reliability_alert_threshold: 0.70

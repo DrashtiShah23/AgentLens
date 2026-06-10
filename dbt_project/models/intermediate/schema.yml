@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: int_run_quality
+    description: Run-level quality labels joined with evaluations
+    columns:
+      - name: run_id
+        tests: [unique, not_null]
+      - name: overall_score
+        tests: [not_null]
+
+  - name: int_failure_classification
+    description: Runs joined with failure classifications
+    columns:
+      - name: run_id
+        tests: [unique, not_null]
+
+  - name: int_prompt_performance
+    description: Aggregated prompt version performance
+    columns:
+      - name: prompt_version_id
+        tests: [not_null]
+      - name: failure_rate
+        tests: [not_null]
+
+  - name: int_model_performance
+    description: Aggregated model performance by task type
+    columns:
+      - name: model_name
+        tests: [not_null]
+
+  - name: int_tool_performance
+    description: Tool success and error rates
+    columns:
+      - name: tool_name
+        tests: [not_null]

@@ -1,0 +1,4 @@
+question_id,task_type,question_text,expected_answer
+bq001,text_to_sql,What was total revenue last month?,125000
+bq002,retrieval_qa,What is our refund policy?,30-day refund policy applies to unused subscriptions
+bq003,tool_use,Create a support ticket for billing issue,TKT-1001

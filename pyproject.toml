@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-failure-observatory"
+version = "0.1.0"
+description = "AI agent reliability observability platform"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "duckdb>=0.10.0",
+    "pyarrow>=14.0.0",
+    "pandas>=2.1.0",
+    "python-dotenv>=1.0.0",
+    "sqlglot>=23.0.0",
+    "dbt-core>=1.7.0",
+    "dbt-duckdb>=1.7.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4.0", "pytest-cov>=4.1.0"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["observatory*", "app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-v --tb=short"

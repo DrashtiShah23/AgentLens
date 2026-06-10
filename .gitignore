@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+data/raw/agent_runs/*.json
+data/processed/parquet/
+data/warehouse/*.duckdb
+data/warehouse/*.duckdb.wal
+data/quarantine/
+.pytest_cache/
+.coverage
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+dbt_project/profiles.yml
+.DS_Store

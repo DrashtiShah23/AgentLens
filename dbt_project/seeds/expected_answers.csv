@@ -1,0 +1,4 @@
+answer_id,task_type,expected_answer
+ea001,text_to_sql,125000
+ea002,retrieval_qa,30-day refund policy applies to unused subscriptions
+ea003,classification,"{""label"": ""billing"", ""confidence"": 0.92}"
