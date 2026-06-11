@@ -1,0 +1,333 @@
+{
+  "models": [
+    {
+      "model_name": "stg_tool_calls",
+      "layer": "staging",
+      "description": "Staged tool call events",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "tool_call_id",
+          "description": ""
+        },
+        {
+          "name": "run_id",
+          "description": ""
+        },
+        {
+          "name": "tool_status",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 6894,
+      "last_updated_at": "2026-06-10T22:17:31.105218+00:00"
+    },
+    {
+      "model_name": "stg_evaluation_results",
+      "layer": "staging",
+      "description": "Staged evaluation results",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "evaluation_id",
+          "description": ""
+        },
+        {
+          "name": "run_id",
+          "description": ""
+        },
+        {
+          "name": "overall_score",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 29253,
+      "last_updated_at": "2026-06-10T22:17:31.108585+00:00"
+    },
+    {
+      "model_name": "stg_retrieval_events",
+      "layer": "staging",
+      "description": "Staged retrieval events with score validation",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "retrieval_id",
+          "description": ""
+        },
+        {
+          "name": "run_id",
+          "description": ""
+        },
+        {
+          "name": "relevance_score",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 8751,
+      "last_updated_at": "2026-06-10T22:17:31.111821+00:00"
+    },
+    {
+      "model_name": "stg_agent_runs",
+      "layer": "staging",
+      "description": "Staged agent runs with deduplication and type casting",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "run_id",
+          "description": "Unique run identifier"
+        },
+        {
+          "name": "agent_name",
+          "description": ""
+        },
+        {
+          "name": "task_type",
+          "description": ""
+        },
+        {
+          "name": "prompt_version_id",
+          "description": ""
+        },
+        {
+          "name": "model_name",
+          "description": ""
+        },
+        {
+          "name": "latency_ms",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 29256,
+      "last_updated_at": "2026-06-10T22:17:31.114086+00:00"
+    },
+    {
+      "model_name": "stg_prompt_versions",
+      "layer": "staging",
+      "description": "Staged prompt version records",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "prompt_version_id",
+          "description": ""
+        },
+        {
+          "name": "agent_name",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 25,
+      "last_updated_at": "2026-06-10T22:17:31.115046+00:00"
+    },
+    {
+      "model_name": "mart_model_comparison",
+      "layer": "mart",
+      "description": "Model scoring matrix across task types",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "model_name",
+          "description": ""
+        },
+        {
+          "name": "reliability_score",
+          "description": "Average reliability score"
+        }
+      ],
+      "tests": [],
+      "row_count": 16,
+      "last_updated_at": "2026-06-10T22:17:31.115171+00:00"
+    },
+    {
+      "model_name": "mart_incident_summary",
+      "layer": "mart",
+      "description": "Grouped incident records with recommendations",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "failure_category",
+          "description": ""
+        },
+        {
+          "name": "severity",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 85,
+      "last_updated_at": "2026-06-10T22:17:31.115238+00:00"
+    },
+    {
+      "model_name": "mart_prompt_regression",
+      "layer": "mart",
+      "description": "Prompt version comparison with regression detection",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "prompt_version_id",
+          "description": ""
+        },
+        {
+          "name": "reliability_score",
+          "description": "Average reliability for this prompt version"
+        }
+      ],
+      "tests": [],
+      "row_count": 25,
+      "last_updated_at": "2026-06-10T22:17:31.115305+00:00"
+    },
+    {
+      "model_name": "mart_failure_trends",
+      "layer": "mart",
+      "description": "Failure counts by category, severity, and day",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "failure_category",
+          "description": ""
+        },
+        {
+          "name": "failure_count",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 24,
+      "last_updated_at": "2026-06-10T22:17:31.115394+00:00"
+    },
+    {
+      "model_name": "mart_agent_reliability",
+      "layer": "mart",
+      "description": "Per-agent daily reliability metrics",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "agent_name",
+          "description": "Agent identifier"
+        },
+        {
+          "name": "run_date",
+          "description": "Date of runs"
+        },
+        {
+          "name": "reliability_score",
+          "description": "Average overall reliability score"
+        },
+        {
+          "name": "failure_rate",
+          "description": "Fraction of runs below reliability threshold"
+        }
+      ],
+      "tests": [],
+      "row_count": 155,
+      "last_updated_at": "2026-06-10T22:17:31.115462+00:00"
+    },
+    {
+      "model_name": "mart_cost_latency",
+      "layer": "mart",
+      "description": "Cost and latency trends with spike detection",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "run_date",
+          "description": ""
+        },
+        {
+          "name": "avg_latency_ms",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 620,
+      "last_updated_at": "2026-06-10T22:17:31.115527+00:00"
+    },
+    {
+      "model_name": "int_run_quality",
+      "layer": "intermediate",
+      "description": "Run-level quality labels joined with evaluations",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "run_id",
+          "description": ""
+        },
+        {
+          "name": "overall_score",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 29253,
+      "last_updated_at": "2026-06-10T22:17:31.123457+00:00"
+    },
+    {
+      "model_name": "int_prompt_performance",
+      "layer": "intermediate",
+      "description": "Aggregated prompt version performance",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "prompt_version_id",
+          "description": ""
+        },
+        {
+          "name": "failure_rate",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 25,
+      "last_updated_at": "2026-06-10T22:17:31.131387+00:00"
+    },
+    {
+      "model_name": "int_model_performance",
+      "layer": "intermediate",
+      "description": "Aggregated model performance by task type",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "model_name",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 16,
+      "last_updated_at": "2026-06-10T22:17:31.137090+00:00"
+    },
+    {
+      "model_name": "int_failure_classification",
+      "layer": "intermediate",
+      "description": "Runs joined with failure classifications",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "run_id",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 29253,
+      "last_updated_at": "2026-06-10T22:17:31.142928+00:00"
+    },
+    {
+      "model_name": "int_tool_performance",
+      "layer": "intermediate",
+      "description": "Tool success and error rates",
+      "owner": "data_engineering",
+      "columns": [
+        {
+          "name": "tool_name",
+          "description": ""
+        }
+      ],
+      "tests": [],
+      "row_count": 2,
+      "last_updated_at": "2026-06-10T22:17:31.144531+00:00"
+    }
+  ],
+  "generated_at": "2026-06-10T22:17:31.145410+00:00"
+}

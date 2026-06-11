@@ -1,18 +1,207 @@
 # AI Failure Observatory
 
-Deterministic AI agent reliability platform: ingest → validate → evaluate → classify → transform (dbt) → investigate (LLM optional).
+> Built an observability platform that ingests AI agent execution logs, scores every run with deterministic evaluators, transforms reliability metrics through dbt, and answers root-cause questions via a constrained investigation agent — **LLM is called once per human question, never once per run.**
 
-## Quick Start
+## Problem
+
+AI agents fail in production for reasons logs rarely explain: prompt regressions, retrieval misses, SQL errors, wrong tool calls, hallucinations, latency spikes. Teams see "request failed" but cannot identify *why*.
+
+## Why This Project Matters
+
+- **Cost:** Per-run LLM evaluation at 1M runs costs hundreds of dollars and adds noise
+- **Correctness:** Deterministic SQL parsing beats LLM guessing for structured signals
+- **Scale:** One investigation query summarizes thousands of runs from pre-aggregated marts
+- **Portfolio:** Demonstrates full data platform + AI reliability engineering at $0 base cost
+
+## Core Design Decision
+
+```
+deterministic evaluators score every run     ← zero LLM cost
+dbt aggregates scores into marts             ← zero LLM cost
+human asks investigation question            ← one optional LLM call
+LLM reads aggregated metrics, not raw logs   ← fractions of a cent
+```
+
+`OBSERVATORY_USE_LLM=false` by default. The platform runs fully without any LLM API.
+
+## Architecture
+
+```mermaid
+flowchart TB
+    subgraph ingest [Ingestion - No LLM]
+        JSON[Raw JSON Logs] --> PYD[Pydantic Validation]
+        PYD -->|valid| PQ[Parquet]
+        PYD -->|invalid| Q[Quarantine]
+        PQ --> DUCK[(DuckDB)]
+    end
+    subgraph eval [Evaluation - No LLM]
+        DUCK --> EV[Deterministic Evaluators]
+        EV --> CLS[Rule-Based Classifier]
+    end
+    subgraph transform [dbt - No LLM]
+        CLS --> DBT[dbt Models]
+        DBT --> MARTS[Mart Tables]
+    end
+    subgraph serve [Serving Layer]
+        MARTS --> ST[Streamlit Dashboard]
+        MARTS --> API[FastAPI]
+        MARTS --> AGENT[Investigation Agent]
+        AGENT -->|optional| LLM[Ollama / paid LLM]
+    end
+```
+
+## Data Flow
+
+```
+Synthetic/API runs → validate → DuckDB raw tables
+  → evaluate (7 scorers) → classify failures
+  → dbt staging/intermediate/marts
+  → dashboard + API + investigation tools
+  → catalog.json + lineage.json
+```
+
+## Tech Stack
+
+| Component | Tool | Cost |
+|---|---|---|
+| Language | Python 3.11+ | Free |
+| Warehouse | DuckDB | Free |
+| Transform | dbt Core | Free |
+| Validation | Pydantic v2 | Free |
+| Dashboard | Streamlit | Free |
+| API | FastAPI | Free |
+| Agent | LangGraph + fallback | Free |
+| LLM (optional) | Ollama / gpt-4o-mini | Pay per query only |
+
+**Base project cost: $0.00**
+
+## Features
+
+- Pydantic v2 contracts with quarantine for bad records
+- Synthetic data with 12 injectable failure modes
+- 7 deterministic evaluators + weighted overall score
+- 11-category failure taxonomy with severity
+- 6 dbt mart models with tests
+- 6-page Streamlit dashboard (reads marts directly)
+- FastAPI with validated ingestion + read-only metrics
+- Investigation agent with 8 safe read-only tools
+- Metadata catalog and lineage from dbt manifest
+
+## Repository Structure
+
+```
+app/
+  api/           FastAPI routes and schemas
+  dashboard/     Streamlit pages and components
+  agent/         Investigation agent (LangGraph + fallback)
+  services/      Warehouse reader, metrics, log writer
+observatory/     Core pipeline (ingest, eval, classify)
+dbt_project/     Staging, intermediate, mart models
+scripts/         CLI entry points
+tests/           Unit and integration tests
+docs/            Architecture and interview materials
+data/            Raw logs, warehouse, metadata (gitignored)
+```
+
+## Setup
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-pip install -e .
+pip install -r requirements.txt && pip install -e .
 cp .env.example .env
 python scripts/initialize_warehouse.py
 python scripts/generate_synthetic_data.py --count 10000
 python scripts/run_local_pipeline.py
+python scripts/refresh_metadata.py
+pytest tests/ -v
+```
+
+## Run Commands
+
+| Command | Purpose |
+|---|---|
+| `python scripts/run_local_pipeline.py` | Full pipeline: ingest → eval → classify → dbt |
+| `export PYTHONPATH=$PWD && streamlit run app/dashboard/streamlit_app.py` | Launch dashboard |
+| `uvicorn app.api.main:app --reload` | Launch API at localhost:8000 |
+| `python scripts/refresh_metadata.py` | Rebuild catalog.json and lineage.json |
+| `pytest tests/ -v` | Run all tests |
+
+## Dashboard Overview
+
+Executive-friendly AI reliability command center — six pages reading directly from DuckDB marts (no Airflow or API required):
+
+1. **Executive Overview** — health KPI cards, reliability trend line, failure mix donut, regression alert
+2. **Failure Observatory** — severity cards, failure trend stacked area, root-cause ranking, incident cards
+3. **Prompt Regression Center** — v5 regression alert, reliability ranking, cost/reliability scatter, regression cards
+4. **Model Trust Leaderboard** — best/cheap/fast/risky scorecards, model×task heatmap, tradeoff scatter plots
+5. **Run Review Center** — quick filters, searchable run list, tabbed run detail with badges
+6. **Root Cause Copilot** — example questions, structured Summary / Evidence / Action response cards
+
+## Dashboard Preview
+
+Recommended screenshots for portfolio README:
+
+| Screenshot | Page | What to capture |
+|---|---|---|
+| Command center hero | Executive Overview | KPI cards, reliability trend line, failure donut, v5 regression alert |
+| Failure breakdown | Failure Observatory | Severity cards, failure donut, stacked trend, incident cards |
+| Prompt regression story | Prompt Regression Center | v5 regression alert card + reliability ranking chart |
+| Model trust comparison | Model Trust Leaderboard | Scorecards + model×task heatmap |
+| Run review workflow | Run Review Center | Quick filters, run list, tabbed detail with badges |
+| Copilot answer | Root Cause Copilot | Example question + structured response card |
+
+## API Overview
+
+| Method | Route | Description |
+|---|---|---|
+| GET | `/health` | Warehouse and log dir status |
+| POST | `/runs` | Ingest validated run payload |
+| GET | `/runs` | List runs with filters |
+| GET | `/runs/{run_id}` | Run detail with evals and failures |
+| GET | `/evaluations` | List evaluation records |
+| POST | `/evaluations/run` | Trigger evaluation |
+| GET | `/metrics/overview` | Dashboard summary metrics |
+| GET | `/metrics/failures` | Failure trends |
+| GET | `/metrics/prompts` | Prompt comparison |
+| GET | `/metrics/models` | Model comparison |
+| POST | `/investigate` | Natural language investigation |
+
+## Investigation Agent
+
+Constrained reliability analyst with 8 read-only tools. Rejects raw SQL and destructive keywords. Defaults to last 7 days when time window is ambiguous. Returns structured metric data when `OBSERVATORY_USE_LLM=false`.
+
+## Demo Script
+
+```bash
+# 1. Run pipeline
+python scripts/run_local_pipeline.py
+
+# 2. Open dashboard → Root Cause Copilot
+export PYTHONPATH=$PWD
+streamlit run app/dashboard/streamlit_app.py
+# Ask: "Did prompt_v5_regression_case make things worse?"
+
+# 3. Try API
+curl http://localhost:8000/health
+curl -X POST http://localhost:8000/investigate \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What are the top failure modes this week?"}'
+```
+
+## Testing
+
+```bash
 pytest tests/unit tests/integration -v
 ```
 
-See `PROJECT_SPEC.md` for full architecture.
+29+ tests covering schemas, evaluators, ingestion, dbt, API, dashboard queries, investigation tools, and metadata.
+
+## Future Improvements
+
+- Apache Airflow DAGs for orchestration
+- Airflow 2→3 migration parity DAG
+- Real-time log streaming
+- Custom alert thresholds in dashboard
+- DataHub integration (optional)
+
+See `PROJECT_SPEC.md` for the full build plan.

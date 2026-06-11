@@ -1,0 +1,113 @@
+{
+  "edges": [
+    {
+      "upstream": "int_model_performance",
+      "downstream": "mart_model_comparison",
+      "transformation_type": "aggregate_for_analytics",
+      "description": "int_model_performance feeds mart_model_comparison"
+    },
+    {
+      "upstream": "stg_agent_runs",
+      "downstream": "mart_incident_summary",
+      "transformation_type": "aggregate_for_analytics",
+      "description": "stg_agent_runs feeds mart_incident_summary"
+    },
+    {
+      "upstream": "int_prompt_performance",
+      "downstream": "mart_prompt_regression",
+      "transformation_type": "aggregate_for_analytics",
+      "description": "int_prompt_performance feeds mart_prompt_regression"
+    },
+    {
+      "upstream": "stg_prompt_versions",
+      "downstream": "mart_prompt_regression",
+      "transformation_type": "aggregate_for_analytics",
+      "description": "stg_prompt_versions feeds mart_prompt_regression"
+    },
+    {
+      "upstream": "stg_agent_runs",
+      "downstream": "mart_failure_trends",
+      "transformation_type": "aggregate_for_analytics",
+      "description": "stg_agent_runs feeds mart_failure_trends"
+    },
+    {
+      "upstream": "stg_agent_runs",
+      "downstream": "mart_agent_reliability",
+      "transformation_type": "aggregate_for_analytics",
+      "description": "stg_agent_runs feeds mart_agent_reliability"
+    },
+    {
+      "upstream": "stg_evaluation_results",
+      "downstream": "mart_agent_reliability",
+      "transformation_type": "aggregate_for_analytics",
+      "description": "stg_evaluation_results feeds mart_agent_reliability"
+    },
+    {
+      "upstream": "stg_agent_runs",
+      "downstream": "mart_cost_latency",
+      "transformation_type": "aggregate_for_analytics",
+      "description": "stg_agent_runs feeds mart_cost_latency"
+    },
+    {
+      "upstream": "stg_evaluation_results",
+      "downstream": "mart_cost_latency",
+      "transformation_type": "aggregate_for_analytics",
+      "description": "stg_evaluation_results feeds mart_cost_latency"
+    },
+    {
+      "upstream": "stg_agent_runs",
+      "downstream": "int_run_quality",
+      "transformation_type": "join_and_aggregate",
+      "description": "stg_agent_runs feeds int_run_quality"
+    },
+    {
+      "upstream": "stg_evaluation_results",
+      "downstream": "int_run_quality",
+      "transformation_type": "join_and_aggregate",
+      "description": "stg_evaluation_results feeds int_run_quality"
+    },
+    {
+      "upstream": "stg_agent_runs",
+      "downstream": "int_prompt_performance",
+      "transformation_type": "join_and_aggregate",
+      "description": "stg_agent_runs feeds int_prompt_performance"
+    },
+    {
+      "upstream": "stg_evaluation_results",
+      "downstream": "int_prompt_performance",
+      "transformation_type": "join_and_aggregate",
+      "description": "stg_evaluation_results feeds int_prompt_performance"
+    },
+    {
+      "upstream": "stg_agent_runs",
+      "downstream": "int_model_performance",
+      "transformation_type": "join_and_aggregate",
+      "description": "stg_agent_runs feeds int_model_performance"
+    },
+    {
+      "upstream": "stg_evaluation_results",
+      "downstream": "int_model_performance",
+      "transformation_type": "join_and_aggregate",
+      "description": "stg_evaluation_results feeds int_model_performance"
+    },
+    {
+      "upstream": "stg_agent_runs",
+      "downstream": "int_failure_classification",
+      "transformation_type": "join_and_aggregate",
+      "description": "stg_agent_runs feeds int_failure_classification"
+    },
+    {
+      "upstream": "stg_evaluation_results",
+      "downstream": "int_failure_classification",
+      "transformation_type": "join_and_aggregate",
+      "description": "stg_evaluation_results feeds int_failure_classification"
+    },
+    {
+      "upstream": "stg_tool_calls",
+      "downstream": "int_tool_performance",
+      "transformation_type": "join_and_aggregate",
+      "description": "stg_tool_calls feeds int_tool_performance"
+    }
+  ],
+  "generated_at": "2026-06-10T22:17:31.145414+00:00"
+}
