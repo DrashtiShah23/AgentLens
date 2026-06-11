@@ -1,6 +1,8 @@
 # Evaluation Methodology
 
-All evaluators are **deterministic**. No LLM is called.
+> Project overview: [README.md](../README.md)
+
+All evaluators are **deterministic**. No LLM is called. Scores reflect synthetic demo agent runs only — not production model benchmarks.
 
 ## Scorers
 

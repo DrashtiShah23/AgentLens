@@ -1,5 +1,7 @@
 # Edge Cases Handled
 
+> Full list in README: [README.md](../README.md#edge-cases-handled)
+
 ## Ingestion
 - Empty files, malformed JSON, missing fields → quarantine with reason
 - Duplicate run_ids → flagged, first kept

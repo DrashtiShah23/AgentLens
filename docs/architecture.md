@@ -1,6 +1,10 @@
 # Architecture
 
+> See [README.md](../README.md) for the full project overview, screenshots, and demo script.
+
 AI Failure Observatory separates **deterministic evaluation** from **human investigation**.
+
+**Disclaimer:** All scores and dashboard metrics come from deterministic evaluation of **synthetic demo agent runs**. This does not benchmark real production GPT, Claude, Gemini, or Llama traffic. LLM is disabled by default (`OBSERVATORY_USE_LLM=false`).
 
 ## Layers
 

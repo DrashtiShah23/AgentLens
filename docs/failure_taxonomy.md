@@ -1,5 +1,7 @@
 # Failure Taxonomy
 
+> Dashboard labels and screenshots: [README.md](../README.md)
+
 | Category | Primary Signals |
 |---|---|
 | hallucination | Low correctness, retrieval exists |

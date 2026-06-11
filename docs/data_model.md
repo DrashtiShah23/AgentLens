@@ -1,5 +1,7 @@
 # Data Model
 
+> dbt overview and architecture: [README.md](../README.md)
+
 ## Raw Tables (DuckDB)
 
 - `agent_runs` — execution events

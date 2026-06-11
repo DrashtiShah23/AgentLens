@@ -1,6 +1,8 @@
 # Resume Bullets
 
-**Data Engineering:** Built an Airflow-ready observability platform ingesting AI agent logs, validating with Pydantic v2, transforming to DuckDB reliability marts via dbt at 10K+ run scale.
+> Primary README bullets and screenshots: [README.md](../README.md)
+
+**Data Engineering:** Built a local-first observability platform ingesting 10K+ synthetic AI agent runs, validating with Pydantic v2, transforming to DuckDB reliability marts via dbt — $0 base infrastructure cost.
 
 **AI Engineering:** Built deterministic evaluation across correctness, SQL, tools, retrieval, format, latency, and cost — plus a LangGraph investigation agent that queries aggregated metrics with near-zero LLM cost.
 
