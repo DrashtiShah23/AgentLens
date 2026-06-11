@@ -385,55 +385,6 @@ See [docs/edge_cases.md](docs/edge_cases.md).
 
 ---
 
-## Demo Script
-
-**5-minute walkthrough for recruiters or interviews:**
-
-```bash
-# 1. Activate and run pipeline (if not already done)
-source .venv/bin/activate
-export PYTHONPATH=$PWD
-python scripts/run_local_pipeline.py
-
-# 2. Open dashboard
-python -m streamlit run app/dashboard/streamlit_app.py
-```
-
-**In the browser:**
-
-1. **Executive Overview** — point out KPI cards and v5 regression alert (synthetic demo data)
-2. **Prompt Regression Center** — show baseline delta chart and plain-English change labels
-3. **Run Review Center** — filter “High severity”, show execution vs reliability status split
-4. **Root Cause Copilot** — click *“Did prompt_v5_regression_case make things worse?”* — show Summary / Evidence / Action
-5. **Optional API:**
-
-```bash
-uvicorn app.api.main:app --reload --port 8000
-curl http://localhost:8000/health
-curl -X POST http://localhost:8000/investigate \
-  -H "Content-Type: application/json" \
-  -d '{"question": "What are the top failure modes this week?"}'
-```
-
----
-
-## Resume Bullets
-
-- Built a **local-first AI agent observability platform** ingesting 10K+ synthetic runs into DuckDB with Pydantic validation, 7 deterministic evaluators, dbt marts, and a 6-page Streamlit command center — **$0 base infrastructure cost**.
-- Designed **evaluation separate from investigation**: zero-LLM per-run scoring, aggregated reliability marts, and a constrained copilot with 8 read-only tools and deterministic summaries (LLM off by default).
-- Shipped **end-to-end data quality**: quarantine pipeline, 11-category failure taxonomy, dbt schema tests, 110+ pytest cases, and metadata catalog/lineage generation.
-
-More variants: [docs/resume_bullets.md](docs/resume_bullets.md)
-
----
-
-## Interview Story
-
-> “Production AI agents fail in ways logs don’t explain — prompt regressions, retrieval misses, SQL errors, tool failures. I built AI Failure Observatory to separate **evaluation from investigation**. Every run is scored deterministically at zero LLM cost. dbt aggregates those scores into reliability marts. Only when a human asks a question does an optional LLM summarize pre-aggregated metrics — one query can represent thousands of runs. The dashboard reads DuckDB directly, shows plain-English reliability language, and includes a synthetic prompt_v5 regression case to demo detection — clearly labeled as demo data, not a claim about real GPT or Claude production performance.”
-
-Full narrative: [docs/interview_story.md](docs/interview_story.md)
-
----
 
 ## Future Work
 
