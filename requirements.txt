@@ -21,3 +21,7 @@ langchain-core>=0.3.0
 # Development and testing
 pytest>=7.4.0
 pytest-cov>=4.1.0
+
+# Optional: dashboard screenshot capture (scripts/capture_dashboard_screenshots.py)
+# pip install playwright && playwright install chromium
+playwright>=1.40.0
